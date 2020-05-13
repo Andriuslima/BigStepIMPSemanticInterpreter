@@ -1,15 +1,17 @@
-package arithexpression
+package expression.bool
 
 import AbstractSyntaxTree
 import Environment
 
-class ArithVariable(val name: String) : ArithExpression() {
+class BoolVariable(val name: String) : BoolExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         return this
     }
 
-    override fun toString(): String { return name }
+    override fun toString(): String {
+        return name
+    }
 
     fun value(env: Environment): Any {
         return env.read(name)

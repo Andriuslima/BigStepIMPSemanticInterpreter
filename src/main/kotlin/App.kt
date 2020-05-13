@@ -1,5 +1,9 @@
-import arithexpression.LessThan
-import arithexpression.Number
+import commands.AssignCommand
+import commands.SequenceCommand
+import commands.SkipCommand
+import expression.arithmetic.ArithVariable
+import expression.arithmetic.Number
+import expression.arithmetic.Sum
 
 fun main() {
     val env = Environment()
@@ -26,7 +30,21 @@ fun main() {
 
 //    val tree: AbstractSyntaxTree = GreaterThan(Number(1.1f), Number(1f))
 
-    val tree: AbstractSyntaxTree = LessThan(Number(1.1f), Number(1f))
+//    val tree: AbstractSyntaxTree = LessThan(Number(1.1f), Number(1f))
+
+//    val tree: AbstractSyntaxTree = SkipCommand()
+
+//    val tree: AbstractSyntaxTree = AssignCommand("x", Sum(ArithVariable("x"), Number(1f)))
+
+//    val tree: AbstractSyntaxTree = AssignCommand("x", And(BoolValue(true), BoolValue(true)))
+
+    val tree: AbstractSyntaxTree = SequenceCommand(
+        AssignCommand("x", Sum(ArithVariable("x"), Number(1f))),
+        SequenceCommand(
+            SkipCommand(),
+            AssignCommand("y", Sum(ArithVariable("x"), Number(1f)))
+        )
+    )
 
     println("Initial Environment -> $env \n")
     println(tree.evaluate(env))

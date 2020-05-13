@@ -1,9 +1,9 @@
-package boolexpression
+package expression.arithmetic
 
 import AbstractSyntaxTree
 import Environment
 
-class BoolValue(val value: Boolean) : BoolExpression() {
+class Number(val value: Float) : ArithmeticExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         return this

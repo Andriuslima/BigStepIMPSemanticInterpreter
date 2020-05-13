@@ -1,4 +1,4 @@
-package boolexpression
+package expression.bool
 
 import AbstractSyntaxTree
 import Environment

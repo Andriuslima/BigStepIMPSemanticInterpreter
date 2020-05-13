@@ -13,13 +13,13 @@ class Environment {
     }
 
     fun read(key: String): Any {
-        return envValues[key] ?: 0
+        return envValues[key] ?: 0f
     }
 
     override fun toString(): String {
         return envValues.keys
-                .stream()
-                .map { key -> "[$key:${read(key)}]" }
-                .collect(Collectors.joining(" "))
+            .stream()
+            .map { key -> "[$key:${read(key)}]" }
+            .collect(Collectors.joining(" "))
     }
 }

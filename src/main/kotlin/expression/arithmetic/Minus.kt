@@ -1,9 +1,9 @@
-package arithexpression
+package expression.arithmetic
 
 import AbstractSyntaxTree
 import Environment
 
-class Sum(private var exp1: ArithExpression, private var exp2: ArithExpression) : ArithExpression() {
+class Minus(private var exp1: ArithmeticExpression, private var exp2: ArithmeticExpression) : ArithmeticExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
@@ -12,17 +12,17 @@ class Sum(private var exp1: ArithExpression, private var exp2: ArithExpression) 
 
         if (exp1 !is Number) {
             println("exp1 $exp1 is not a integer, evalutaing...")
-            exp1 = exp1.evaluate(env) as ArithExpression
+            exp1 = exp1.evaluate(env) as ArithmeticExpression
             println("exp1 evaluated as $exp1, checking exp2")
         }
 
         if (exp2 !is Number) {
             println("exp2 $exp2 is not a integer, evalutaing...")
-            exp2 = exp2.evaluate(env) as ArithExpression
+            exp2 = exp2.evaluate(env) as ArithmeticExpression
             println("exp2 evaluated as $exp2, returning")
         }
 
-        return Number((exp1 as Number).value + (exp2 as Number).value)
+        return Number((exp1 as Number).value - (exp2 as Number).value)
     }
 
     private fun evaluateVariables(env: Environment) {
@@ -42,6 +42,6 @@ class Sum(private var exp1: ArithExpression, private var exp2: ArithExpression) 
     }
 
     override fun toString(): String {
-        return "($exp1 + $exp2)"
+        return "($exp1 - $exp2)"
     }
 }

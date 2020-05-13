@@ -1,10 +1,9 @@
-package arithexpression
+package expression.arithmetic
 
 import AbstractSyntaxTree
 import Environment
-import boolexpression.BoolValue
 
-class LessThan(private var exp1: ArithExpression, private var exp2: ArithExpression) : ArithExpression() {
+class Sum(private var exp1: ArithmeticExpression, private var exp2: ArithmeticExpression) : ArithmeticExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
@@ -13,17 +12,17 @@ class LessThan(private var exp1: ArithExpression, private var exp2: ArithExpress
 
         if (exp1 !is Number) {
             println("exp1 $exp1 is not a integer, evalutaing...")
-            exp1 = exp1.evaluate(env) as ArithExpression
+            exp1 = exp1.evaluate(env) as ArithmeticExpression
             println("exp1 evaluated as $exp1, checking exp2")
         }
 
         if (exp2 !is Number) {
             println("exp2 $exp2 is not a integer, evalutaing...")
-            exp2 = exp2.evaluate(env) as ArithExpression
+            exp2 = exp2.evaluate(env) as ArithmeticExpression
             println("exp2 evaluated as $exp2, returning")
         }
 
-        return BoolValue((exp1 as Number).value < (exp2 as Number).value)
+        return Number((exp1 as Number).value + (exp2 as Number).value)
     }
 
     private fun evaluateVariables(env: Environment) {
