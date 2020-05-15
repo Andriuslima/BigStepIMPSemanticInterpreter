@@ -6,21 +6,22 @@ import expression.arithmetic.ArithVariable
 import expression.arithmetic.ArithmeticExpression
 import expression.arithmetic.Number
 
-class GreaterThan(private var exp1: ArithmeticExpression, private var exp2: ArithmeticExpression) : BoolExpression() {
+class GreaterThan(private var expression1: ArithmeticExpression, private var expression2: ArithmeticExpression) : BoolExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
 
-        evaluateVariables(env)
+        var exp1: ArithmeticExpression = evaluateVariables(expression1, env)
+        var exp2: ArithmeticExpression = evaluateVariables(expression2, env)
 
         if (exp1 !is Number) {
-            println("exp1 $exp1 is not a integer, evalutaing...")
+            println("exp1 $exp1 is not a boolean, evalutaing...")
             exp1 = exp1.evaluate(env) as ArithmeticExpression
             println("exp1 evaluated as $exp1, checking exp2")
         }
 
         if (exp2 !is Number) {
-            println("exp2 $exp2 is not a integer, evalutaing...")
+            println("exp2 $exp2 is not a boolean, evalutaing...")
             exp2 = exp2.evaluate(env) as ArithmeticExpression
             println("exp2 evaluated as $exp2, returning")
         }
@@ -28,23 +29,17 @@ class GreaterThan(private var exp1: ArithmeticExpression, private var exp2: Arit
         return BoolValue((exp1 as Number).value > (exp2 as Number).value)
     }
 
-    private fun evaluateVariables(env: Environment) {
-        if (exp1 is ArithVariable) {
-            println("First expression is a variable, evaluating...")
-            val variable = exp1 as ArithVariable
-            exp1 = Number(variable.value(env) as Float)
-            println("Variable ${variable.name} evaluated as $exp1")
+    private fun evaluateVariables(e: ArithmeticExpression, env: Environment): ArithmeticExpression {
+        if (e is ArithVariable) {
+            println("Expression $e is a variable, evaluating...")
+            println("Variable ${e.name} evaluated as ${e.value(env)}")
+            return Number(e.value(env) as Float)
         }
 
-        if (exp2 is ArithVariable) {
-            println("Second expression is a variable, evaluating...")
-            val variable = exp2 as ArithVariable
-            exp2 = Number(variable.value(env) as Float)
-            println("variable ${variable.name} evaluated as $exp2")
-        }
+        return e
     }
 
     override fun toString(): String {
-        return "($exp1 + $exp2)"
+        return "($expression1 > $expression2)"
     }
 }

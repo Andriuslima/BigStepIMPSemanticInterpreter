@@ -3,12 +3,13 @@ package expression.arithmetic
 import AbstractSyntaxTree
 import Environment
 
-class Sum(private var exp1: ArithmeticExpression, private var exp2: ArithmeticExpression) : ArithmeticExpression() {
+class Sum(private var expression1: ArithmeticExpression, private var expression2: ArithmeticExpression) : ArithmeticExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
 
-        evaluateVariables(env)
+        var exp1: ArithmeticExpression = evaluateVariables(expression1, env)
+        var exp2: ArithmeticExpression = evaluateVariables(expression2, env)
 
         if (exp1 !is Number) {
             println("exp1 $exp1 is not a integer, evalutaing...")
@@ -25,23 +26,17 @@ class Sum(private var exp1: ArithmeticExpression, private var exp2: ArithmeticEx
         return Number((exp1 as Number).value + (exp2 as Number).value)
     }
 
-    private fun evaluateVariables(env: Environment) {
-        if (exp1 is ArithVariable) {
+    private fun evaluateVariables(e: ArithmeticExpression, env: Environment): ArithmeticExpression {
+        if (e is ArithVariable) {
             println("First expression is a variable, evaluating...")
-            val variable = exp1 as ArithVariable
-            exp1 = Number(variable.value(env) as Float)
-            println("Variable ${variable.name} evaluated as $exp1")
+            println("Variable ${e.name} evaluated as ${e.value(env)}")
+            return Number(e.value(env) as Float)
         }
 
-        if (exp2 is ArithVariable) {
-            println("Second expression is a variable, evaluating...")
-            val variable = exp2 as ArithVariable
-            exp2 = Number(variable.value(env) as Float)
-            println("variable ${variable.name} evaluated as $exp2")
-        }
+        return e
     }
 
     override fun toString(): String {
-        return "($exp1 + $exp2)"
+        return "($expression1 + $expression2)"
     }
 }

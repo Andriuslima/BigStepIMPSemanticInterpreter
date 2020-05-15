@@ -3,12 +3,13 @@ package expression.bool
 import AbstractSyntaxTree
 import Environment
 
-class Or(private var exp1: BoolExpression, private var exp2: BoolExpression) : BoolExpression() {
+class Or(private var expression1: BoolExpression, private var expression2: BoolExpression) : BoolExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
 
-        evaluateVariables(env)
+        var exp1: BoolExpression = evaluateVariables(expression1, env)
+        var exp2: BoolExpression = evaluateVariables(expression2, env)
 
         if (exp1 !is BoolValue) {
             println("exp1 $exp1 is not a boolean, evalutaing...")
@@ -25,23 +26,17 @@ class Or(private var exp1: BoolExpression, private var exp2: BoolExpression) : B
         return BoolValue((exp1 as BoolValue).value || (exp2 as BoolValue).value)
     }
 
-    private fun evaluateVariables(env: Environment) {
-        if (exp1 is BoolVariable) {
-            println("First expression is a variable, evaluating...")
-            val variable = exp1 as BoolVariable
-            exp1 = BoolValue(variable.value(env) as Boolean)
-            println("Variable ${variable.name} evaluated as $exp1")
+    private fun evaluateVariables(e: BoolExpression, env: Environment): BoolExpression {
+        if (e is BoolVariable) {
+            println("Expression $e is a variable, evaluating...")
+            println("Variable ${e.name} evaluated as ${e.value(env)}")
+            return BoolValue(e.value(env) as Boolean)
         }
 
-        if (exp2 is BoolVariable) {
-            println("Second expression is a variable, evaluating...")
-            val variable = exp2 as BoolVariable
-            exp2 = BoolValue(variable.value(env) as Boolean)
-            println("variable ${variable.name} evaluated as $exp2")
-        }
+        return e
     }
 
     override fun toString(): String {
-        return "($exp1 && $exp2)"
+        return "($expression1 || $expression2)"
     }
 }

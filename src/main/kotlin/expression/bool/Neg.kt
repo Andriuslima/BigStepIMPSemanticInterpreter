@@ -2,13 +2,14 @@ package expression.bool
 
 import AbstractSyntaxTree
 import Environment
+import kotlin.math.exp
 
-class Neg(private var exp1: BoolExpression) : BoolExpression() {
+class Neg(private var expression: BoolExpression) : BoolExpression() {
 
     override fun evaluate(env: Environment): AbstractSyntaxTree {
         println("Evaluating expression: $this")
 
-        evaluateVariables(env)
+        var exp1: BoolExpression = evaluateVariables(expression, env)
 
         if (exp1 !is BoolValue) {
             println("exp1 $exp1 is not a boolean, evalutaing...")
@@ -19,16 +20,17 @@ class Neg(private var exp1: BoolExpression) : BoolExpression() {
         return BoolValue(!(exp1 as BoolValue).value)
     }
 
-    private fun evaluateVariables(env: Environment) {
-        if (exp1 is BoolVariable) {
+    private fun evaluateVariables(e: BoolExpression, env: Environment): BoolExpression {
+        if (e is BoolVariable) {
             println("First expression is a variable, evaluating...")
-            val variable = exp1 as BoolVariable
-            exp1 = BoolValue(variable.value(env) as Boolean)
-            println("Variable ${variable.name} evaluated as $exp1")
+            println("Variable ${e.name} evaluated as ${e.value(env)}")
+            return BoolValue(e.value(env) as Boolean)
         }
+
+        return e
     }
 
     override fun toString(): String {
-        return "(!$exp1)"
+        return "(!$expression)"
     }
 }
